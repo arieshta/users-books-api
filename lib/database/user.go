@@ -2,6 +2,7 @@ package database
 
 import (
 	"users-api/config"
+	"users-api/middlewares"
 	"users-api/models"
 )
 
@@ -48,4 +49,29 @@ func DeleteUserById(id int) error {
 		return err
 	}
 	return nil
+}
+
+func LoginUser(user *models.Users) (interface{}, error){
+	var err error
+	err = config.DB.Where("email = ? AND password = ?", user.Email, user.Password).Error
+	if err != nil {
+		return nil, err
+	}
+	user.Token, err = middlewares.CreateToken(int(user.ID))
+	if err != nil {
+		return nil, err
+	}
+	if err := config.DB.Save(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func GetDetailUserById(id int) (interface{}, error) {
+	var user models.Users
+
+	if e := config.DB.Find(&user, id).Error; e != nil {
+		return nil, e
+	}
+	return user, nil
 }

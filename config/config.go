@@ -12,6 +12,7 @@ import (
 )
 
 var DB *gorm.DB
+const SECRET_JWT = "uwuwuw"
 
 func InitDB() {
 	err := godotenv.Load(".env")
@@ -19,7 +20,7 @@ func InitDB() {
 		log.Fatalf("Error loading environment variables")
 		os.Exit(1)
 	}
-
+	
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		os.Getenv("DB_username"),
 		os.Getenv("DB_password"),

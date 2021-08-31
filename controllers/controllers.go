@@ -99,6 +99,39 @@ func DeleteUserByIdController(c echo.Context) error {
 	})
 }
 
+func LoginUserController(c echo.Context) error {
+	user := models.Users{}
+	c.Bind(&user)
+
+	users, e := database.LoginUser(&user)
+	if e != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "success login",
+		"user": users,
+	})
+}
+
+func GetUserDetailByIdController(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	user, err := database.GetDetailUserById(id)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "success",
+		"user": user,
+	})
+}
+
 // BOOKS CONTROLLERS
 func AddBookController(c echo.Context) error {
 	var book models.Books
