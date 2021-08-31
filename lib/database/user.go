@@ -67,11 +67,11 @@ func LoginUser(user *models.Users) (interface{}, error){
 	return user, nil
 }
 
-func GetDetailUserById(id int) (interface{}, error) {
-	var user models.Users
+// func GetDetailUserById(id int) (interface{}, error) {
+// 	var user models.Users
 
-	if e := config.DB.Find(&user, id).Error; e != nil {
-		return nil, e
-	}
-	return user, nil
-}
+// 	if e := config.DB.Find(&user, id).Error; e != nil {
+// 		return nil, e
+// 	}
+// 	return user, nil
+// }

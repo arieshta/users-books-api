@@ -16,10 +16,26 @@ func New() *echo.Echo {
 	e.POST("/login", controllers.LoginUserController)
 
 	e.POST("/users", controllers.CreateUserController)
-	e.GET("/users", controllers.GetUsersController)
+	// e.GET("/users", controllers.GetUsersController)
 	// e.GET("/users/:id", controllers.GetUserByIdController)
 	// e.PUT("/users/:id", controllers.UpdateUserByIdController)
 	// e.DELETE("/users/:id", controllers.DeleteUserByIdController)
+	
+	// JWT Auth Group
+	eJWT := e.Group("/jwt")
+	eJWT.Use(middleware.JWT([]byte(config.SECRET_JWT)))
+	eJWT.GET("/users", controllers.GetUsersController)
+	eJWT.GET("/users/:id", controllers.GetUserByIdController)
+	eJWT.PUT("/users/:id", controllers.UpdateUserByIdController)
+	eJWT.DELETE("/users/:id", controllers.DeleteUserByIdController)
+	
+	// BasicAuth Group
+	eAuth := e.Group("")
+	eAuth.Use(middleware.BasicAuth(m.BasicAuthDB))
+	eAuth.GET("/users", controllers.GetUsersController)
+	eAuth.GET("/users/:id", controllers.GetUserByIdController)
+	eAuth.PUT("/users/:id", controllers.UpdateUserByIdController)
+	eAuth.DELETE("/users/:id", controllers.DeleteUserByIdController)
 	
 	e.POST("/books", controllers.AddBookController)
 	e.GET("/books", controllers.GetBooksController)
@@ -27,17 +43,5 @@ func New() *echo.Echo {
 	e.PUT("/books/:id", controllers.UpdateBookByIdController)
 	e.DELETE("/books/:id", controllers.DeleteBookByIdController)
 	
-	// JWT Auth Group
-	eJWT := e.Group("/jwt")
-	eJWT.Use(middleware.JWT([]byte(config.SECRET_JWT)))
-	eJWT.GET("/users/:id", controllers.GetUserDetailByIdController)
-	
-	// BasicAuth Group
-	eAuth := e.Group("")
-	eAuth.Use(middleware.BasicAuth(m.BasicAuthDB))
-	eAuth.GET("/users/:id", controllers.GetUserByIdController)
-	eAuth.PUT("/users/:id", controllers.UpdateUserByIdController)
-	eAuth.DELETE("/users/:id", controllers.DeleteUserByIdController)
-
 	return e
 }

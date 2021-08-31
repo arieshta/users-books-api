@@ -113,24 +113,24 @@ func LoginUserController(c echo.Context) error {
 	})
 }
 
-func GetUserDetailByIdController(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
+// func GetUserDetailByIdController(c echo.Context) error {
+// 	id, err := strconv.Atoi(c.Param("id"))
 
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
+// 	if err != nil {
+// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+// 	}
 
-	user, err := database.GetDetailUserById(id)
+// 	user, err := database.GetDetailUserById(id)
 
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
+// 	if err != nil {
+// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+// 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status": "success",
-		"user": user,
-	})
-}
+// 	return c.JSON(http.StatusOK, map[string]interface{}{
+// 		"status": "success",
+// 		"user": user,
+// 	})
+// }
 
 // BOOKS CONTROLLERS
 func AddBookController(c echo.Context) error {
