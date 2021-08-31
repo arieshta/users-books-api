@@ -4,7 +4,7 @@ import (
 	"users-api/config"
 	"users-api/controllers"
 
-	m "users-api/middlewares"
+	// m "users-api/middlewares"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -20,7 +20,7 @@ func New() *echo.Echo {
 	// e.GET("/users/:id", controllers.GetUserByIdController)
 	// e.PUT("/users/:id", controllers.UpdateUserByIdController)
 	// e.DELETE("/users/:id", controllers.DeleteUserByIdController)
-	
+
 	// JWT Auth Group
 	eJWT := e.Group("/jwt")
 	eJWT.Use(middleware.JWT([]byte(config.SECRET_JWT)))
@@ -28,20 +28,20 @@ func New() *echo.Echo {
 	eJWT.GET("/users/:id", controllers.GetUserByIdController)
 	eJWT.PUT("/users/:id", controllers.UpdateUserByIdController)
 	eJWT.DELETE("/users/:id", controllers.DeleteUserByIdController)
-	
+
 	// BasicAuth Group
-	eAuth := e.Group("")
-	eAuth.Use(middleware.BasicAuth(m.BasicAuthDB))
-	eAuth.GET("/users", controllers.GetUsersController)
-	eAuth.GET("/users/:id", controllers.GetUserByIdController)
-	eAuth.PUT("/users/:id", controllers.UpdateUserByIdController)
-	eAuth.DELETE("/users/:id", controllers.DeleteUserByIdController)
-	
-	e.POST("/books", controllers.AddBookController)
-	e.GET("/books", controllers.GetBooksController)
-	e.GET("/books/:id", controllers.GetBookByIdController)
-	e.PUT("/books/:id", controllers.UpdateBookByIdController)
-	e.DELETE("/books/:id", controllers.DeleteBookByIdController)
-	
+	// eAuth := e.Group("")
+	// eAuth.Use(middleware.BasicAuth(m.BasicAuthDB))
+	// eAuth.GET("/users", controllers.GetUsersController)
+	// eAuth.GET("/users/:id", controllers.GetUserByIdController)
+	// eAuth.PUT("/users/:id", controllers.UpdateUserByIdController)
+	// eAuth.DELETE("/users/:id", controllers.DeleteUserByIdController)
+
+	e.POST("/books", controllers.AddBookController) //
+	eJWT.GET("/books", controllers.GetBooksController)
+	eJWT.GET("/books/:id", controllers.GetBookByIdController)
+	eJWT.PUT("/books/:id", controllers.UpdateBookByIdController)    //
+	eJWT.DELETE("/books/:id", controllers.DeleteBookByIdController) //
+
 	return e
 }
